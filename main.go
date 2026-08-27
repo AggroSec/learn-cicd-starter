@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -32,7 +33,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("PORT environment variable is not set")
+		port = "8080"
 	}
 
 	apiCfg := apiConfig{}
@@ -91,7 +92,7 @@ func main() {
 	srv := &http.Server{
 		Addr:              ":" + port,
 		Handler:           router,
-		ReadHeaderTimeout: 90,
+		ReadHeaderTimeout: 90 * time.Second,
 	}
 
 	log.Printf("Serving on port: %s\n", port) // #nosec G706 -- port is a hardcoded constant, not user input
